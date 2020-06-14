@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wdk.healthy.dao.LoginMapper">
+
+
+    <select id="queryUserInfo" resultType="com.wdk.healthy.pojo.UserInfo">
+        select * from user_info where username=#{username} and password=#{password}
+    </select>
+    <select id="queryExpertInfo" resultType="com.wdk.healthy.pojo.ExpertInfo">
+        select * from expert_info where username=#{username} and password = #{password}
+    </select>
+</mapper>

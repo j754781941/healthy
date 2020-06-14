@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wdk.healthy.dao.ExpertMapper">
+    <insert id="insertUserExpertGoods">
+      insert into user_expert_goods(user_id,expert_id,good) values(${userId},${expertId},${goods})
+    </insert>
+    <insert id="insertExpertInfoByRegister">
+        insert into expert_info(name,username,password,tele,sex,email,designation,content)
+        values (#{expertInfo.name},
+        #{expertInfo.username},
+        #{expertInfo.password},
+        #{expertInfo.tele},
+        #{expertInfo.sex},
+        #{expertInfo.email},
+        #{expertInfo.designation},
+        #{expertInfo.content})
+    </insert>
+    <update id="insertExpertInfo">
+        update expert_info
+        set username = #{expertInfo.username},
+            `name` = #{expertInfo.name},
+            tele = #{expertInfo.tele},
+            sex = #{expertInfo.sex},
+            email = #{expertInfo.email},
+            age = #{expertInfo.age},
+            qq = #{expertInfo.qq},
+            designation = #{expertInfo.designation},
+            address = #{expertInfo.address},
+            content = #{expertInfo.content}
+        where id = #{expertInfo.id}
+    </update>
+    <update id="updateUserExpertGoods">
+      update user_expert_goods set good = ${goods} where expert_id = ${expertId} and user_id = ${userId}
+    </update>
+
+    <select id="queryIndexExpert" resultType="com.wdk.healthy.pojo.ExpertInfo">
+        SELECT
+            id,
+            username,
+            `name`,
+            `password`,
+            age,
+            tele,
+            sex,
+            email,
+            content,
+            address,
+            create_date,
+            designation,
+            img,
+            (
+                SELECT
+                    count(1)
+                FROM
+                    user_expert_goods
+                WHERE
+                    expert_id = a.id
+            ) AS good
+        FROM
+            expert_info a
+        ORDER BY good desc
+        limit 4;
+    </select>
+    <select id="queryExpertInfoById" resultType="com.wdk.healthy.pojo.ExpertInfo">
+        select * from expert_info where id = ${id}
+    </select>
+    <select id="queryUserExpertGoods" resultType="java.lang.Integer">
+        select good from user_expert_goods where expert_id = ${expertId} and user_id = ${userId}
+    </select>
+    <select id="queryGoodsById" resultType="java.lang.Integer">
+        select count(1) from user_expert_goods where expert_id = ${id} and good = 1
+    </select>
+    <select id="queryGoodFlag" resultType="java.lang.Integer">
+        select * from user_expert_goods where expert_id = ${expertId} and user_id = ${userId} and good = 1;
+    </select>
+    <select id="queryExpertInfoByUsername" resultType="com.wdk.healthy.pojo.ExpertInfo">
+        select img,`name` from expert_info where username = #{username}
+    </select>
+    <select id="queryAllExperts" resultType="com.wdk.healthy.pojo.ExpertInfo">
+        select id,img,`name`,sex,username,designation from expert_info;
+    </select>
+    <select id="queryUserGood" resultType="com.wdk.healthy.pojo.ExpertInfo">
+        SELECT
+            a.id,
+            a.`name`,
+            a.username,
+            a.`password`,
+            a.age,
+            a.tele,
+            a.sex,
+            a.email,
+            a.content,
+            a.address,
+            a.create_date,
+            a.designation,
+            a.img,
+            a.good,
+            a.qq
+        FROM
+            expert_info a,
+            user_expert_goods b
+        WHERE
+            a.id = b.expert_id
+        AND b.user_id = #{id}
+        AND b.good = 1
+    </select>
+    <select id="queryChatInfoByExpertName" resultType="com.wdk.healthy.pojo.ChatInfo">
+        SELECT
+            `from`,`to`,max(`msg`) as msg,max(`create_date`) as create_date
+        FROM
+            chat_info
+        WHERE
+            `from` = #{username} or `to` = #{username}
+        GROUP BY `from`
+        UNION
+        SELECT
+            `from`,`to`,max(`msg`) as msg,max(`create_date`) as create_date
+        FROM
+            chat_info
+        WHERE
+            `from` = #{username} or `to` = #{username}
+        GROUP BY `to`
+    </select>
+    <select id="queryExpertGood" resultType="com.wdk.healthy.pojo.UserInfo">
+        SELECT
+            a.*
+        FROM
+            user_info a,
+            user_expert_goods b
+        where
+        a.id = b.user_id
+        AND b.expert_id = #{id}
+        AND b.good = 1
+    </select>
+</mapper>

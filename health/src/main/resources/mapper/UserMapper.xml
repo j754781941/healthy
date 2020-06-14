@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wdk.healthy.dao.UserMapper">
+    <insert id="insertChatInfo">
+        insert into chat_info(`from`,`to`,msg,create_date)
+        values (#{sid},#{cid},#{msg},#{chatDate})
+    </insert>
+    <insert id="insertUserInfoByRegister">
+        insert into user_info(name,username,password,age,tele,qq,email,sex,create_date)
+        values (#{userInfo.name},
+        #{userInfo.username},
+        #{userInfo.password},
+        #{userInfo.age},
+        #{userInfo.tele},
+        #{userInfo.qq},
+        #{userInfo.email},
+        #{userInfo.sex},NOW())
+    </insert>
+
+
+    <update id="updateUserService">
+        update user_info set img = #{path} where id = #{userId}
+    </update>
+    <update id="updateUserInfoById">
+        update user_info
+        set `name` = #{userInfo.name},
+        tele = #{userInfo.tele},
+        sex = #{userInfo.sex},
+        email = #{userInfo.email},
+        age = #{userInfo.age},
+        qq = #{userInfo.qq}
+        where id = #{userInfo.id}
+    </update>
+    <select id="selectUserInfoById" resultType="com.wdk.healthy.pojo.UserInfo">
+        select * from user_info where id = #{id};
+    </select>
+    <select id="queryUserInfoByUsername" resultType="com.wdk.healthy.pojo.UserInfo">
+        select * from user_info where username = #{username}
+    </select>
+    <select id="queryChatInfoByUserId" resultType="com.wdk.healthy.pojo.ChatInfo">
+        SELECT
+            *
+        FROM
+            chat_info
+        WHERE
+            `from` = #{chatInfo.from}
+        AND `to` = #{chatInfo.to}
+        UNION
+        SELECT
+            *
+        FROM
+            chat_info
+        WHERE
+            `from` = #{chatInfo.to}
+        AND `to` = #{chatInfo.from}
+        order by create_date asc
+    </select>
+    <select id="queryUserChatInfoByUserName" resultType="com.wdk.healthy.pojo.ChatInfo">
+        SELECT
+            `from`,`to`,max(`msg`) as msg,max(`create_date`) as create_date
+        FROM
+            chat_info
+        WHERE
+            `from` = #{username} or `to` = #{username}
+        GROUP BY `from`
+        UNION
+        SELECT
+            `from`,`to`,max(`msg`) as msg,max(`create_date`) as create_date
+        FROM
+            chat_info
+        WHERE
+            `from` = #{username} or `to` = #{username}
+        GROUP BY `to`
+    </select>
+    <select id="queryAllUserInfo" resultType="com.wdk.healthy.pojo.UserInfo">
+        select * from user_info order by create_date desc
+    </select>
+</mapper>
