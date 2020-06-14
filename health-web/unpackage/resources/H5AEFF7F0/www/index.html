@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>用户主界面</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/hui.css">
+		<style>
+			.icon-style{
+				font-family:Helvetica;
+				width:100%;
+				height:80px; 
+				text-align:center; 
+				color:#000000; 
+				line-height:0px; 
+				font-size:13.5px;
+				margin-top: 10px;
+				margin-left:1px;
+				background:#FFFFFF;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="tabbar" class="mui-control-content mui-active">
+			<header class="mui-bar mui-bar-nav">
+				<h1 id="title" class="mui-title">首页</h1>
+			</header>
+			<div class="mui-content">
+				<!--搜素框-->
+				<div class="mui-input-row mui-search mui-col-sm-6 mui-col-xs-12" id="searchForm">
+					<input type="search" id="searchInput" onkeyup="enterSearch(event)" class="mui-input-clear" placeholder="搜索">
+				</div>
+				<!--图片滚动-->
+				<div id="slider" class="mui-slider" style="overflow: visible;">
+					<div class="mui-slider-group mui-slider-loop" style="overflow: visible;">
+						<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+						<div class="mui-slider-item mui-slider-item-duplicate" style="overflow: visible;">
+							<a href="#" name="16">
+								<img src="img/suan.png">
+								<p class="mui-slider-title">大蒜有什么功效?为什么外国人抢着吃蒜</p>
+							</a>
+						</div>
+						<div class="mui-slider-item" style="overflow: visible;">
+							<a href="#" name="14">
+								<img src="img/shuimian.png">
+								<p class="mui-slider-title">失眠多梦的治疗方法</p>
+							</a>
+						</div>
+						<div class="mui-slider-item" style="overflow: visible;">
+							<a href="#" name="17">
+								<img src="img/jianguo.png">
+								<p class="mui-slider-title">坚果的功效与作用</p>
+							</a>
+						</div>
+						<div class="mui-slider-item" style="overflow: visible;">
+							<a href="#" name="17">
+								<img src="img/hugan.png">
+								<p class="mui-slider-title">这物常见却是护肝降血的宝贝</p>
+							</a>
+						</div>
+						<div class="mui-slider-item" style="overflow: visible;">
+							<a href="#" name="18">
+								<img src="img/ganai.png">
+								<p class="mui-slider-title">肝癌现已成为了高发的疾病，肝癌喜欢找这几类人！</p>
+							</a>
+						</div>
+						<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+						<div class="mui-slider-item mui-slider-item-duplicate" style="overflow: visible;">
+							<a href="#" name="16">
+								<img src="img/suan.png">
+								<p class="mui-slider-title">大蒜有什么功效?为什么外国人抢着吃蒜</p>
+							</a>
+						</div>
+					</div>
+					<div class="mui-slider-indicator mui-text-right" style="overflow: visible;">
+						<div class="mui-indicator mui-active" style="overflow: visible;"></div>
+						<div class="mui-indicator" style="overflow: visible;"></div>
+						<div class="mui-indicator" style="overflow: visible;"></div>
+						<div class="mui-indicator" style="overflow: visible;"></div>
+					</div>
+				</div>
+				<!-- 四个图标 -->
+				<!-- <span class="icon-style">
+					<img src="img/yinshi.png" width="25%"/>
+					膳食搭配
+				</span>
+				<spanclass="icon-style">
+					<img src="img/zhuanhuan.png" width="25%"/>
+					热量转换
+				</span>
+				<span class="icon-style">
+					<img src="img/jianshen.png" width="25%"/>
+					同城健身
+				</span>
+				<span class="icon-style">
+					<img src="img/jiankang.png" width="25%"/>
+					体质监测
+				</span> -->
+				<div class="hui-flex">
+					<div class="icon-style">
+						<img src="img/yinshi.png" width="102%" style="margin-top: -5px;margin-bottom: 3px;"/>
+						膳食搭配
+					</div>
+					<div class="icon-style">
+						<img src="img/zhuanhuan.png" width="88%" style="margin-bottom: 8.5px;"/>
+						热量转换
+					</div>
+					<div class="icon-style">
+						<img src="img/jianshen.png" width="114%" style="margin-top: -5px;margin-bottom: -4px;"/>
+						同城健身
+					</div>
+					<div class="icon-style">
+						<img src="img/jiankang.png" width="100%" style="marmargin-bottom: 3.5px;margin-top: -1px;"/>
+						体质监测
+					</div>
+				</div>
+
+				<!-- 金牌专家标题 -->
+				<div class="hui-common-title" style="margin-top:15px;">
+					<div class="hui-common-title-line" style="color: #D4AF37;"></div>
+					<div class="hui-common-title-txt" style="color: #D4AF37;">金牌专家</div>
+					<div class="hui-common-title-line" style="color: #D4AF37;"></div>
+				</div>
+			</div>
+		</div>
+		<div id="tabbar-with-chat" class="mui-control-content">
+			<header class="mui-bar mui-bar-nav">
+				<h1 id="title" class="mui-title">推荐</h1>
+			</header>
+			<div class="hui-wrap mui-content">
+
+			</div>
+		</div>
+		<div id="tabbar-with-contact" class="mui-control-content">
+			<header class="mui-bar mui-bar-nav">
+				<h1 id="title" class="mui-title">专家</h1>
+			</header>
+			<div class="mui-content mui-scroll-wrapper1" id="pullrefresh">
+				<div class="mui-scroll">
+
+				</div>
+			</div>
+		</div>
+		<div id="tabbar-with-map" class="mui-control-content">
+			<header class="mui-bar mui-bar-nav">
+				<h1 id="title" class="mui-title">我的</h1>
+			</header>
+			<div class="mui-content">
+
+			</div>
+		</div>
+		</div>
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" href="#tabbar">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-chat">
+				<span class="mui-icon mui-icon-eye"></span>
+				<span class="mui-tab-label">推荐</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-contact">
+				<span class="mui-icon mui-icon-contact"></span>
+				<span class="mui-tab-label">专家</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-map">
+				<span class="mui-icon mui-icon-person"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+		<script src="js/mui.min.js"></script>
+		<script src="js/hui.js"></script>
+		<script>
+			//图片轮播
+			var gallery = mui('.mui-slider');
+			gallery.slider({
+				interval: 5000 //自动轮播周期，若为0则不自动播放，默认为0；
+			});
+		</script>
+	</body>
+</html>

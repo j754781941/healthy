@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="mui-switch mui-switch-blue mui-switch" onclick="isActive()" id="mySwitch" style="float: right;">
+		  <div class="mui-switch-handle"></div>
+		</div>
+		<img id="title" src="img/image.png" width="70%" style="position:absolute;
+				   padding-left: 0;
+				   margin: auto;
+				   margin-top: -10%;
+				   margin-left: 15%;
+				   opacity: 0;" />
+		<form id="content" class="mui-input-group" style="position:absolute;
+				   width: 90%;
+				   padding-left: 0;
+				   margin: auto;
+				   opacity: 0;
+				   background-color: transparent;
+				   margin-top: 140%;
+				   margin-left: 5%;">
+			<div class="mui-input-row">
+				<label>用户名</label>
+				<input type="text" class="mui-input-clear" placeholder="请输入用户名" id="username">
+			</div>
+			<div class="mui-input-row">
+				<label>密码</label>
+				<input type="password" class="mui-input-password" placeholder="请输入密码" id="password">
+			</div>
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-primary" style="width: 100%;" onclick="login()">登录</button>
+				<div class="link-area" style="margin-top: 5%;" onclick="register()"><a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>忘记密码</a></div>
+			</div>
+		</form>
+		<script src="js/mui.min.js"></script>
+		<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+		<!--增加进入动画-->
+		<script>
+			$(function() {
+				$("#title").animate({
+					'margin-top': '40%',
+					'opacity': '1',
+				}, 'slow');
+				$("#content").animate({
+					'margin-top': '90%',
+					'opacity': '1',
+				}, 'slow');
+			})
+		</script>
+		<script type="text/javascript">
+			$(function(){
+				if(localStorage.getItem('userInfo') != undefined){
+					window.location.href = "index.html";
+				}else if(localStorage.getItem('expertInfo') != undefined){
+					window.location.href = "expert_index.html";
+				}
+			})
+			var url = 'http://114.115.167.207:8099/login/userLogin';
+			var usePage;
+			//登录功能异步请求
+			function login() {
+				var loginInfo = {
+					username: $("#username").val(),
+					password: $("#password").val()
+				}
+				mui.ajax(url, {
+					data: loginInfo,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						console.log(data.flag)
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						if(data.flag == "1"){
+							var userInfo = {
+								userId: data.userId,
+								username: data.username,
+								password: data.password,
+								name: data.name,
+								qq: data.qq,
+								email: data.email,
+								tele: data.tele,
+								sex: data.sex,
+								age: data.age,
+								img: "http://114.115.167.207:8099/image/"+data.img
+							}
+							localStorage.setItem('userInfo', JSON.stringify(userInfo));
+							mui.alert("登录成功！");
+							window.location.href = "index.html";
+						}else if(data.flag == "2"){
+							var expertInfo = {
+								id: data.id,
+								sex: data.sex,
+								name: data.name,
+								tele: data.tele,
+								email: data.email,
+								qq: data.qq,
+								username: data.username,
+								password: data.password,
+								img: "http://114.115.167.207:8099/image/"+data.img,
+								content: data.content,
+								address: data.address,
+								designation: data.designation
+							}
+							localStorage.setItem('expertInfo', JSON.stringify(expertInfo));
+							window.location.href = "expert_index.html";
+						}else{
+							mui.alert("密码有误！");
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						mui.alert("网络异常！");
+					}
+				});
+				
+			}
+			
+			function register(){
+				var result = mui.confirm("你是什么身份？","养生专家",["专家","用户"], function(e) {
+					if (e.index == 1) {
+						mui.openWindow({
+							url: "register.html",
+							id: "register.html",
+							show: {
+								autoShow: true, //页面loaded事件发生后自动显示，默认为true
+								aniShow: 'animationType', //页面显示动画，默认为”slide-in-right“；
+								duration: 'animationTime' //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+							}
+						})
+					} else {
+						mui.openWindow({
+							url: "expert_register.html",
+							id: "expert_register.html",
+							show: {
+								autoShow: true, //页面loaded事件发生后自动显示，默认为true
+								aniShow: 'animationType', //页面显示动画，默认为”slide-in-right“；
+								duration: 'animationTime' //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+							}
+						})
+					}
+				})
+			}
+			function isActive(){
+				var isActive = document.getElementById("mySwitch").classList.contains("mui-active");
+				if(isActive){
+				  url = 'http://114.115.167.207:8099/login/expertLogin'
+				}else{
+				  url = 'http://114.115.167.207:8099/login/userLogin'
+				}
+			}
+		</script>
+	</body>
+
+</html>

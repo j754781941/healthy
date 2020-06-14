@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style type="text/css">
+        .ui-sortable .panel-header {
+            cursor: move
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/center1.css"/>
+    <link rel="stylesheet" href="css/mui.min.css">
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="text-decoration: none;"></a>
+    <h1 id="title" class="mui-title">体质检测</h1>
+</header>
+<div class="mui-content">
+    <div class="panel-body">
+        <form action="" method="post" class="form form-horizontal responsive" id="demoform">
+            <label class="form-label col-xs-3">首先请输入一些必要信息以便我们进行计算！</label>
+            <div class="row cl">
+                <label class="form-label col-xs-3">身高：（cm）</label>
+                <label class="form-label col-xs-3"> </label>
+                <div class="formControls col-xs-8">
+                    <input type="text" class="input-text radius" placeholder="请输入您的身高，以厘米为单位" name="height" id="height"
+                           autocomplete="off">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-3">体重：（kg）</label>
+                <label class="form-label col-xs-3"> </label>
+                <div class="formControls col-xs-8">
+                    <input type="text" class="input-text radius" placeholder="请输入您的体重，以千克为单位" name="weight" id="weight">
+                </div>
+            </div>
+            <div class="row cl">
+                <input class="btn btn-success radius widdl" type="submit"
+                       value="立&nbsp;&nbsp;&nbsp;即&nbsp;&nbsp;&nbsp;计&nbsp;&nbsp;&nbsp;算" onclick="jisuan()"
+                       style="background-color: #62C462;">
+            </div>
+        </form>
+    </div>
+    <div id="aaa" style="width: 94%;margin-left: 3%;">
+        <p id="jieguo"></p>
+    </div>
+</div>
+<script>
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+</script>
+<!--体质检测算法-->
+<script>
+    function jisuan() {
+        var height = document.getElementById("height").value / 100;
+        var weight = document.getElementById("weight").value;
+        if (height == 0 || weight == 0)
+            alert("请填写所有信息！");
+        else if (weight / (height * height) < 18.5) {
+            alert("正常BMI指数应为“18.5-23.9”\n"
+                + "您的BMI指数仅有："
+                + Number(weight / (height * height)).toFixed(1)
+                + "，您太瘦了！\n"
+                + "建议您多摄入碳水化合物、蛋白质、肉类和维生素，保持高兴心态不要焦虑，增加运动不熬夜。\n"
+                + "您的理想体重至少为："
+                + Math.floor(height * height * 18.6)
+                + "Kg。\n"
+            )
+            document.getElementById("jieguo").innerHTML =
+                "您太瘦了，需要增重，共需增重："
+                + (Math.floor(height * height * 18.6) - weight)
+                + "Kg（约为"
+                + (Math.floor(height * height * 18.6) - weight) * 3886
+                + "大卡路里）。\n"
+                + "去进行膳食规划吧：";
+            var div = document.createElement("a");
+            aaa.appendChild(div);
+            div.href = "shanshidapei.html";
+            div.id = "aaaa";
+            div.innerHTML = "膳食规划";
+        }
+        else if ((weight / (height * height)) >= 18.5 && weight / (height * height) < 24) {
+            alert("您的BMI指数是："
+                + Number(weight / (height * height)).toFixed(1)
+                + "，恭喜您！您的身材很标准！\n"
+            );
+        }
+        else if ((weight / (height * height)) >= 24 && weight / (height * height) < 28) {
+            alert("正常BMI指数应为“18.5-23.9”\n"
+                + "您的BMI指数是："
+                + Number(weight / (height * height)).toFixed(1)
+                + "，您有点偏胖！\n"
+                + "建议您减少摄入碳水化合物、蛋白质和肉类，增加运动量。\n"
+                + "您的理想体重至多为："
+                + Math.floor(height * height * 23.9)
+                + "Kg。\n"
+            )
+            document.getElementById("jieguo").innerHTML =
+                "您有点偏胖了，需要减重，共需减重："
+                + (Math.floor(weight - height * height * 23.9))
+                + "Kg（约为"
+                + (Math.floor(weight - height * height * 23.9)) * 7700
+                + "大卡路里）。\n"
+                + "去进行膳食规划吧：";
+            var div = document.createElement("a");
+            aaa.appendChild(div);
+            div.href = "shanshidapei.html";
+            div.id = "aaaa";
+            div.innerHTML = "膳食规划";
+        }
+        else if ((weight / (height * height)) >= 28) {
+            alert("正常BMI指数应为“18.5-23.9”\n"
+                + "您的BMI指数是："
+                + Number(weight / (height * height)).toFixed(1)
+                + "，您过于肥胖了！\n"
+                + "建议您减少摄入碳水化合物、蛋白质和肉类，增加运动量。\n"
+                + "您的理想体重至多为："
+                + Math.floor(height * height * 23.9)
+                + "Kg。\n"
+            )
+            document.getElementById("jieguo").innerHTML =
+                "您过于肥胖了，需要减重，共需减重："
+                + (Math.floor(weight - height * height * 23.9))
+                + "Kg（约为"
+                + (Math.floor(weight - height * height * 23.9)) * 7700
+                + "大卡路里）。\n"
+                + "去进行膳食规划吧：";
+            var div = document.createElement("a");
+            aaa.appendChild(div);
+            div.href = "shanshidapei.html";
+            div.id = "aaaa";
+            //div.style.text-decoration="none";
+            div.innerHTML = "膳食规划";
+        }
+    }
+</script>
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui/1.9.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="lib/jquery.SuperSlide/2.1.1/jquery.SuperSlide.min.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script src="js/mui.min.js"></script>
+</body>
+</html>

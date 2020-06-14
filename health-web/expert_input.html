@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>专家完善信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" href="css/Button.css"
+    <!--App自定义的css-->
+    <!-- <link rel="stylesheet" type="text/css" href="../css/app.css" /> -->
+    <style>
+        h5 {
+            margin: 5px 7px;
+        }
+
+        #biao {
+            position: absolute;
+            top: 10px;
+            left: 36%;
+        }
+
+        .hehe {
+            position: absolute;
+            top: 5px;
+            left: 0%;
+        }
+
+        #headimg {
+            position: relative;
+            left: 28%;
+        }
+    </style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">完善信息</h1>
+</header>
+<div class="mui-content">
+    <div class="mui-content-padded" style="margin: 5px;">
+        <form class="mui-input-group">
+			<div class="mui-input-row">
+			    <label>账号</label>
+			    <input type="text" id="account"  readonly="readonly">
+			</div>
+			<div class="mui-input-row">
+			    <label>姓名</label>
+			    <input type="text" id="name" placeholder="请输入您的姓名">
+			</div>
+			<div class="mui-input-row">
+			    <label>职称</label>
+			    <input type="text" id="designation" placeholder="请输入您的职称">
+			</div>
+            <div class="mui-input-row">
+                <label>手机号</label>
+                <input type="text" id="tele" placeholder="请输入您的手机号">
+            </div>
+			<div class="mui-input-row">
+			    <label>地址</label>
+			    <input type="text" id="address" placeholder="请输入您的地址">
+			</div>
+            <div class="mui-input-row">
+                <label>性别</label>
+                <table id="biao">
+                    <tr>
+                        <td>
+                            <input name="radio" type="radio" value="男" id="boy" />男&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input name="radio" type="radio" value="女" id="gril" />女
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="mui-input-row">
+                <label>邮箱</label>
+                <input type="text" id="email" placeholder="请输入您的邮箱">
+            </div>
+            <div class="mui-input-row">
+                <label>年龄</label>
+                <input type="text" id="age" placeholder="请输入您的年龄">
+            </div>
+			<div class="mui-input-row">
+			    <label>qq号</label>
+			    <input type="text" id="qq" placeholder="请输入您的qq号">
+			</div>
+			<div class="mui-input-row" style="height: 8%;">
+			    <label>简介</label>
+				<textarea rows="5" placeholder="请输入您的简介" id="content" cols="10">
+					
+				</textarea>
+			    <!-- <input type="text" id="content" placeholder=""> -->
+			</div>
+            <div class="mui-button-row">
+                <button type="button" class="mui-btn mui-btn-primary button" onclick="upload();">确认</button>&nbsp;&nbsp;
+                <button type="button" class="mui-btn mui-btn-danger" onclick="return false;">取消</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script>
+	var obj = JSON.parse(localStorage.getItem('expertInfo'));
+	var id = obj.id;
+	setTimeout(function(){
+		mui.ajax('http://114.115.167.207:8099/expert/queryExpertInfoById',{
+			data:{
+				"id": id
+			},
+			contentType: 'application/json',
+			dataType:'json',//服务器返回json格式数据
+			type:'post',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				$("#account").attr("value",data.username);
+				$("#name").attr("value",data.name);
+				$("#designation").attr("value",data.designation);
+				$("#tele").attr("value",data.tele);
+				$("#address").attr("value",data.address);
+				data.sex == "男"?$("#boy").attr("checked","checked"):$("#gril").attr("checked","checked");
+				$("#email").attr("value",data.email);
+				$("#age").attr("value",data.age);
+				$("#qq").attr("value",data.qq);
+				$("#content").html(data.content);
+			},
+			error:function(xhr,type,errorThrown){
+				mui.toast("网络错误！");
+			}
+		});
+	},300);
+	
+	function upload(){
+		console.log("id--\-\->"+id);
+		console.log("content-\-\->"+$("#content").val());
+		var sex = $("#boy").attr("checked")!="checked"?"男":"女";
+		mui.ajax('http://114.115.167.207:8099/expert/insertExpertInfo',{
+			data:{
+				"id": id,
+				"username": $("#account").val(),
+				"name": $("#name").val(),
+				"tele": $("#tele").val(),
+				"sex": sex,
+				"email": $("#email").val(),
+				"age": parseInt($("#age").val()),
+				"qq": $("#qq").val(),
+				"designation": $("#designation").val(),
+				"address": $("#address").val(),
+				"content": $("#content").val()
+			},
+			contentType: "application/json",
+			dataType:'json',//服务器返回json格式数据
+			type:'post',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				console.log(data.flag);
+				if(data.flag == 1){
+					mui.alert("修改成功！");
+				}else{
+					mui.alert("修改失败！");
+				}
+			},
+			error:function(xhr,type,errorThrown){
+				mui.alert("网络异常！")
+			}
+		});
+	} 
+</script>
+</body>
+</html>

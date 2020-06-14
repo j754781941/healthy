@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<img id="title" src="img/image.png" width="70%" 
+			style="position:absolute;
+				   padding-left: 0;
+				   margin: auto;
+				   margin-top: -10%;
+				   margin-left: 15%;
+				   opacity: 0;"/>
+		<form id="content" class="mui-input-group" 
+			style="position:absolute;
+				   width: 90%;
+				   padding-left: 0;
+				   margin: auto;
+				   opacity: 0;
+				   background-color: transparent;
+				   margin-top: 140%;
+				   margin-left: 5%;">
+			<div class="mui-input-row">
+				<label>用户名</label>
+			<input type="text" class="mui-input-clear" placeholder="请输入用户名">
+			</div>
+			<div class="mui-input-row">
+				<label>密码</label>
+				<input type="password" class="mui-input-password" placeholder="请输入密码">
+			</div>
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-primary" style="width: 100%;">登录</button>
+				<div class="link-area" style="margin-top: 5%;"><a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>忘记密码</a>
+				</div>	    
+			</div>
+		</form>
+		<script src="js/mui.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+		<!--增加进入动画-->
+		<script>
+			$(function(){
+				$("#title").animate({
+				      'margin-top':'40%',
+				      'opacity':'1',
+				},'slow');
+				$("#content").animate({
+				      'margin-top':'90%',
+				      'opacity':'1',
+				},'slow');
+			})
+		</script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+	</body>
+
+</html>

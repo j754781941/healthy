@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>关于软件</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="css/mui.min.css">
+    <!--App自定义的css-->
+    <!--<link rel="stylesheet" type="text/css" href="../css/app.css" />-->
+    <style>
+
+        .mui-plus .plus {
+            display: inline;
+        }
+
+        .plus {
+            display: none;
+        }
+
+        p {
+            text-indent: 22px;
+        }
+
+        span.mui-icon {
+            font-size: 14px;
+            color: #007aff;
+            margin-left: -15px;
+            padding-right: 10px;
+        }
+
+        .mui-popover {
+            height: 300px;
+        }
+
+        .mui-content {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">关于软件</h1>
+</header>
+<div class="mui-content">
+    <div class="mui-content-padded">
+        <br>
+        <p>系统名称：养生专家</p>
+        <p>版本号：1.0</p>
+        <p>系统简介：随着社会的发展与人们生活水平的提高，人们越来越重视健康，此软件打破了普通用户想要找养生专家
+            而又囊中羞涩的问题。用合理的价格方便专家与用户一对一联系，专家也能凭借此软件赚取外快。实现双赢的作用。本软件还免费提供
+            了膳食搭配、食物热量转换、同城健身与体质检测等功能，方便用户查询在日常养生过程中查询一些有用的信息，我们还会每日推送
+            关于养生的干货，更好的服务于大众。
+        </p>
+        <p>作者：王德昆</p>
+        <p style="text-indent: 0;">
+            <a href="#middlePopover" class="mui-btn mui-btn-primary mui-btn-block mui-btn-outlined"
+               style="padding: 5px 20px;">彩蛋</a>
+        </p>
+    </div>
+</div>
+<div id="middlePopover" class="mui-popover">
+    <div class="mui-popover-arrow"></div>
+    <div class="mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <img src="img/caidan.jpg" width="100%" height="100%"/>
+        </div>
+    </div>
+</div>
+<script src="js/mui.min.js"></script>
+<script>
+    mui.init();
+
+    mui.plusReady(function () {
+    });
+
+    mui('.mui-scroll-wrapper').scroll();
+    mui('body').on('shown', '.mui-popover', function (e) {
+        //console.log('shown', e.detail.id);//detail为当前popover元素
+    });
+    mui('body').on('hidden', '.mui-popover', function (e) {
+        //console.log('hidden', e.detail.id);//detail为当前popover元素
+    });
+</script>
+</body>
+
+</html>

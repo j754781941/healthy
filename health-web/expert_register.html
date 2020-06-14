@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>用户注册</title>
+<link rel="stylesheet" type="text/css" href="css/hui.css" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+<body style="background:#F4F5F6;">
+<header class="hui-header">
+    <div id="hui-back"></div>
+    <h1>专家注册</h1>
+</header>
+<div class="hui-wrap">
+    <!-- <div class="hui-center-title" style="margin-top:35px;"><h1 style="border:0px;">注册成为新用户</h1></div> -->
+    <div style="margin:20px 10px; margin-bottom:15px;" class="hui-form" id="form1">
+        <div class="hui-form-items">
+        	<div class="hui-form-items-title">姓名</div>
+            <input type="text" class="hui-input hui-input-clear" placeholder="如：王小坤" id="name" checkType="string" checkData="2,3" checkMsg="用户名应为2-3个字符" />
+        </div>
+		<div class="hui-form-items">
+        	<div class="hui-form-items-title">用户名</div>
+            <input type="text" class="hui-input hui-input-clear" placeholder="如：hcoder" id="username" checkType="string" checkData="5,20" checkMsg="用户名应为5-20个字符" />
+        </div>
+        <div class="hui-form-items">
+        	<div class="hui-form-items-title">登录密码</div>
+            <input type="password" class="hui-input hui-pwd-eye" placeholder="登录密码" checkType="string" id="pwd" checkData="6,20" checkMsg="密码应为6-20个字符" />
+        </div>
+        <div class="hui-form-items">
+        	<div class="hui-form-items-title">确认密码</div>
+            <input type="password" class="hui-input hui-pwd-eye" placeholder="确认密码" id="password" checkType="sameWithId" checkData="pwd" checkMsg="两次密码不一致"  />
+        </div>
+        <div class="hui-form-items">
+        	<div class="hui-form-items-title">手机号</div>
+            <input type="text" class="hui-input hui-input-clear" placeholder="1889088..." id="tele" checkType="phone"  checkMsg="手机号有误!"  />
+        </div>
+		<div class="hui-form-items">
+			<div class="hui-form-items-title">性别</div>
+		    <div class="hui-form-radios" style="line-height:38px;">
+				<input type="radio" value="男" name="sex" id="g1" checked="checked" onchange="showSelectRes(this);" /><label for="g1">男生</label>
+				<input type="radio" value="女" name="sex" id="g2" onchange="showSelectRes(this);" /><label for="g2">女生</label>
+		    </div>
+		</div>
+		<div class="hui-form-items">
+			<div class="hui-form-items-title">邮箱</div>
+		    <input type="text" class="hui-input hui-input-clear" placeholder="如:754781@qq.com" checkType="email" id="email" checkMsg="邮箱格式有误!"  />
+		</div>
+		<div class="hui-form-items">
+			<div class="hui-form-items-title">年龄</div>
+		    <input type="text" class="hui-input hui-input-clear" placeholder="如:21岁" checkType="string" id="age" checkData="1,3" checkMsg="您确定您那么大么？"  />
+		</div>
+		<div class="hui-form-items">
+			<div class="hui-form-items-title">职称</div>
+		    <input type="text" class="hui-input hui-input-clear" placeholder="如:高级营养师" id="designation"   />
+		</div>
+		<div class="hui-form-items">
+			<div class="hui-form-items-title">简介</div>
+		    <div class="hui-form-textarea">
+		        <textarea placeholder="简介..." id="content"></textarea>
+		    </div>
+		</div>
+    </div>
+    <div style="padding:10px; padding-top:10px;">
+        <button type="button" class="hui-button hui-button-large hui-primary" id="submit">立即注册</button>
+    </div>
+</div>
+<script type="text/javascript" src="js/hui.js" charset="UTF-8"></script>
+<script type="text/javascript" src="js/hui-form.js" charset="utf-8"></script>
+<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript">
+	var data = {};
+	var sex = '男';
+	//获取单选框的值
+	function showSelectRes(_selfBtn){
+	    hui(_selfBtn).parent().find('input').each(function(cObj){
+	        if(cObj.checked){sex = cObj.value;}
+	    });
+		// console.log(sex)
+	}
+	hui('#submit').click(function(){
+		//验证
+		var res = huiFormCheck('#form1');
+		
+		var data = {"name": $("#name").val(),
+					"username":$("#username").val(),
+					"password":$("#password").val(),
+					"tele":$("#tele").val(),
+					"sex":$("#sex").val(),
+					"email":$("#email").val(),
+					"age":$("#age").val(),
+					"designation":$("#designation").val(),
+					"content": $("#content").val()};
+		data.sex = sex;
+		// console.log(data);
+		
+		//提交
+		if(res){
+			mui.ajax('http://114.115.167.207:8099/expert/insertExpertInfoByRegister',{
+				data:JSON.stringify(data),
+				dataType:'json',//数据格式类型
+				type:'POST',//http请求类型
+				timeout:10000,//超时设置
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success:function(data){
+					//处理成功返回的数据
+					//{'result':1,'data':"注册成功"}
+					if(data.flag==1){
+						alert("注册成功！");
+						mui.back();
+					}else{
+						// plus.ui.toast(data.data);
+						alert("注册失败！");
+					}
+				},
+				error:function(){
+					alert("网络异常！");
+				}
+			})
+		}
+	});
+</script>
+</body>
+</html>

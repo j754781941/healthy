@@ -1,0 +1,89 @@
+.center1 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 94%;
+    height: auto;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.center2 {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    width: 70%;
+    height: auto;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.widdl {
+    width: 94%;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+#widmp {
+    margin-left: 110px;
+}
+
+.fanhuijian {
+    width: auto;
+    height: 40px;
+}
+
+.jichukuang {
+    margin-top: 3%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.anjianzu {
+    width: 22%;
+    float: left;
+    margin-right: 3%;
+}
+
+.b1 {
+    margin-left: 8%;
+}
+
+.b2 {
+    float: left;
+    width: 30%;
+}
+
+.b3 {
+    float: left;
+}
+
+body {
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+}
+
+html, body, form, fieldset, p, div, h1, h2, h3, h4, h5, h6 {
+    -webkit-text-size-adjust: 100%;
+}
+
+.mui-bar-tab {
+    background: 0 0
+}
+
+.mui-bar {
+    margin: 0;
+    padding: 0
+}
+
+.mui-tab-item {
+    display: table-cell !important
+}
+
+.mui-active > a:not(.mui-btn)

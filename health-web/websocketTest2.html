@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>在线单聊室</title>
+		<script src="lib/jquery/1.9.1/jquery.min.js"></script>
+	</head>
+	<body>
+		<input type="button" value="连接服务器" onclick="WebSocketTest()" /><br />
+		发送消息：<input type="text" id="message" /><input type="button" value="发送消息" onclick="sendMessage()" /><br />
+		<hr style="color: red;" />
+		<div style="border: 1px solid red;">
+			<ul id="showMsg" style="list-style: none;">
+			</ul>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.imageViewer.js"></script>
+		<script src="js/arttmpl.js"></script>
+		<script type="text/javascript">
+			var ws;
+			function WebSocketTest() {
+				if ("WebSocket" in window) {
+					// alert("您的浏览器支持 WebSocket!");
+					var name = "j754781941";
+					// 打开一个 web socket
+					ws = new WebSocket("ws://114.115.167.207:8099/websocket/expert&" + name);
+					ws.onmessage = function(evt) {
+						var msg = JSON.parse(evt.data);
+						var received_msg = msg.msg;
+						$("#showMsg").append("<li>" + received_msg + "</li>");
+						// alert(received_msg)
+						// alert("数据已接收...");
+					};
+					// ws.onopen = function() {
+					// 	// Web Socket 已连接上，使用 send() 方法发送数据
+					// 	// alert("数据发送中");
+					// 	var name = $("#yourname").val();
+					// 	ws.send("欢迎"+name+"加入讨论组");
+					// 	// alert("数据发送中...");
+					// };
+					ws.onclose = function() {
+						// 关闭 websocket
+						alert("连接已关闭...");
+					};
+				} else {
+					// 浏览器不支持 WebSocket
+					alert("您的浏览器不支持 WebSocket!");
+				}
+			}
+			function sendMessage(){
+				var json = JSON.stringify({
+					"from": "expert&" + "j754781941",
+					"to": "admin",
+					"info": $("#message").val()
+				});
+				//发送数据
+				var url = "http://114.115.167.207:8099/checkcenter/socket/push/user&admin/"+json;
+				mui.ajax(url,{
+					data:{
+						
+					},
+					contentType: 'application/json',
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					success:function(data){
+						console.log("发送成功！");
+					},
+					error:function(xhr,type,errorThrown){
+						
+					}
+				});
+				$("#showMsg").append("<li>" + $("#message").val() + "</li>");
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/hui.css">
+		<style>
+			.icon-style{
+				font-family:Helvetica;
+				width:100%;
+				height:80px; 
+				text-align:center; 
+				color:#000000; 
+				line-height:0px; 
+				font-size:13.5px;
+				margin-top: 10px;
+				margin-left:1px;
+				background:#ffffff;
+			}
+			.icon-style:active{
+				background-color: #efeff4;
+			}
+			.hui-tab-item{
+				border:0px;
+			}
+			/* 必要的css  */
+			.hui-news-list{padding:6px 10px;}
+			.hui-news-list li{position:relative; width:100%; border-bottom:1px solid #E4E3E6; overflow:hidden;}
+			.hui-news-list li:last-child{border:none;}
+			.hui-news-list li a{display:block; overflow:hidden; padding:15px 0px;}
+			.hui-news-list div{-webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; word-break:break-word;}
+			.hui-news-list-l{width:68%; float:left; line-height:1.6em; padding-right:10px; font-size:16px;}
+			.hui-news-list-l span{color:#999999; font-size:11px;}
+			.hui-news-list-r{width:32%; float:right;}
+			.hui-news-list-r img{width:100%;}
+			.hui-news-list-titile{line-height:1.6em; font-size:16px;}
+			.hui-news-list-imgs{font-size:0px; padding-top:8px;}
+			.hui-news-list-imgs img{display:block; width:33.3%; float:left; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; word-break:break-word; padding-right:5px;}
+			.hui-news-list-img{font-size:0px; padding:8px 0px 5px 0px;}
+			.hui-news-list-img img{width:100%;}
+			.hui-news-list-info{color:#999999; font-size:11px; padding-top:8px; line-height:18px;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">消息</h1>
+			<!--搜素框-->
+			<!-- <div class="mui-input-row mui-search mui-col-sm-6 mui-col-xs-1" style="width: 100%;margin-top: 5px;margin-bottom: -10;height: 40px;" id="searchForm">
+				<input type="search" id="searchInput" onkeyup="enterSearch(event)" class="mui-input-clear" placeholder="搜索">
+			</div> -->
+		</header>
+
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<ul class="mui-table-view mui-table-view-chevron" id="users">
+					<!-- <li class="mui-table-view-cell mui-media">
+						<a href="javascript:;">
+							<img class="mui-media-object mui-pull-left" src="images/shuijiao.jpg">
+							<div class="mui-media-body">
+								幸福
+								<p class='mui-ellipsis'>能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+							</div>
+							<span style="position: absolute; font-size: 12px; margin-left: 64%;margin-top: -12%; color: #8f8f94;">下午 1:37</span>
+							<span style="position: absolute;margin-right: 4%; margin-top: 2.7%;" class="mui-badge mui-badge-danger">1</span>
+						</a>
+					</li> -->
+				</ul>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/hui.js"></script>
+		<script src="js/hui-tab.js" type="text/javascript"></script>
+		<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+		<script>
+			var users = "expert&" + JSON.parse(localStorage.getItem('expertInfo')).username;
+			console.log(users);
+			mui.init({
+				pullRefresh: {
+					container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down: {
+						height: 50, //可选,默认50.触发下拉刷新拖动距离,
+						auto: true, //可选,默认false.首次加载自动下拉刷新一次
+						contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+						contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+						contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+						callback: function() {
+							setTimeout(function() {
+								mui.ajax('http://114.115.167.207:8099/users/queryUserChatInfoByUserName',{
+									dataType:'json',//服务器返回json格式数据
+									type:'post',//HTTP请求类型
+									data:{
+										username: users
+									},
+									timeout:10000,//超时时间设置为10秒；
+									headers: {
+										'Content-Type': 'application/json'
+									},
+									success:function(data){
+										$("#users").html('');
+										console.log(data.length);
+										for(var i=0;i<data.length;i++){
+											var imgUrl = data[i].from!=null && data[i].from != undefined?"http://114.115.167.207:8099/image/" + data[i].from:"images/shuijiao.jpg"
+											$("#users").append('<li class="mui-table-view-cell mui-media user" data-username="' + data[i].to.substring(5) + '" id="' + imgUrl + '" name="' + data[i].username + '">'+
+												'<a href="javascript:;">'+
+													'<img class="mui-media-object mui-pull-left" src="' + imgUrl + '">'+
+													'<div class="mui-media-body">'+
+														data[i].username+
+														'<p class="mui-ellipsis">' + data[i].msg + '</p>'+
+													'</div>'+
+													'<span style="position: absolute; font-size: 12px; margin-left: 64%;margin-top: -12%; color: #8f8f94;">' + data[i].createDate + '</span>'+
+													'<span style="position: absolute;margin-right: 4%; display:none; margin-top: 2.7%;" class="mui-badge mui-badge-danger">1</span>'+
+												'</a>'+
+											'</li>');
+										}
+										mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+									},
+									error: function(xhr,type){
+										// alert(type)
+									}
+								});
+							}, 200)
+						} //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					}
+				}
+			});
+			mui(".mui-table-view-chevron").on('tap', '.user', function() {
+				var name = this.getAttribute("name");
+				var imgUrl = this.getAttribute("id");
+				var username = this.getAttribute("data-username");
+				var webview = mui.openWindow({
+					url: "expert_chat.html",
+					id: "expert_chat.html",
+					show: {
+						autoShow: true, //页面loaded事件发生后自动显示，默认为true
+						aniShow: 'animationType', //页面显示动画，默认为”slide-in-right“；
+						duration: 'animationTime' //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					},
+					extras: {
+						"userId": username,
+						"userName": name,
+						"userImg": imgUrl
+					}
+				})
+			})
+			$(function(){
+				var expertUserName = JSON.parse(localStorage.getItem('expertInfo')).username;
+				//连接websocket服务器
+				var ws = new WebSocket("ws://114.115.167.207:8099/websocket/" + expertUserName);
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>专家界面</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/hui.css">
+		<style>
+			.icon-style{
+				font-family:Helvetica;
+				width:100%;
+				height:80px; 
+				text-align:center; 
+				color:#000000; 
+				line-height:0px; 
+				font-size:13.5px;
+				margin-top: 10px;
+				margin-left:1px;
+				background:#ffffff;
+			}
+			.icon-style:active{
+				background-color: #efeff4;
+			}
+			.hui-tab-item{
+				border:0px;
+			}
+			/* 必要的css  */
+			.hui-news-list{padding:6px 10px;}
+			.hui-news-list li{position:relative; width:100%; border-bottom:1px solid #E4E3E6; overflow:hidden;}
+			.hui-news-list li:last-child{border:none;}
+			.hui-news-list li a{display:block; overflow:hidden; padding:15px 0px;}
+			.hui-news-list div{-webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; word-break:break-word;}
+			.hui-news-list-l{width:68%; float:left; line-height:1.6em; padding-right:10px; font-size:16px;}
+			.hui-news-list-l span{color:#999999; font-size:11px;}
+			.hui-news-list-r{width:32%; float:right;}
+			.hui-news-list-r img{width:100%;}
+			.hui-news-list-titile{line-height:1.6em; font-size:16px;}
+			.hui-news-list-imgs{font-size:0px; padding-top:8px;}
+			.hui-news-list-imgs img{display:block; width:33.3%; float:left; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; word-break:break-word; padding-right:5px;}
+			.hui-news-list-img{font-size:0px; padding:8px 0px 5px 0px;}
+			.hui-news-list-img img{width:100%;}
+			.hui-news-list-info{color:#999999; font-size:11px; padding-top:8px; line-height:18px;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">专家</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper1" id="pullrefresh">
+				<div class="mui-card mui-scroll" style="margin-bottom: 80px;margin-top: 10px;">
+					<ul class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right"  href="javascript:void(0);" target="_blank" >
+								<img src="./images/logo.png" width="20%" height="10%"/>
+								<span style="position: absolute;margin-left: 2%;margin-top: 0%;">姓名：王德坤
+								<img src="img/boy.jpg" width="5%" height="5%"/>
+								</span>
+								<span style="position: absolute;margin-top: 9%;margin-left: 2%;">职称：高级营养师</span>
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right"  href="javascript:void(0);" target="_blank" >
+								<img src="./images/logo.png" width="20%" height="10%"/>
+								<span style="position: absolute;margin-left: 2%;margin-top: 0%;">姓名：王德坤
+								<img src="img/boy.jpg" width="5%" height="5%"/>
+								</span>
+								<span style="position: absolute;margin-top: 9%;margin-left: 2%;">职称：高级营养师</span>
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right"  href="javascript:void(0);" target="_blank" >
+								<img src="./images/logo.png" width="20%" height="10%"/>
+								<span style="position: absolute;margin-left: 2%;margin-top: 0%;">姓名：王德坤
+								<img src="img/boy.jpg" width="5%" height="5%"/>
+								</span>
+								<span style="position: absolute;margin-top: 9%;margin-left: 2%;">职称：高级营养师</span>
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right"  href="javascript:void(0);" target="_blank" >
+								<img src="./images/logo.png" width="20%" height="10%"/>
+								<span style="position: absolute;margin-left: 2%;margin-top: 0%;">姓名：王德坤
+								<img src="img/boy.jpg" width="5%" height="5%"/>
+								</span>
+								<span style="position: absolute;margin-top: 9%;margin-left: 2%;">职称：高级营养师</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<script src="js/mui.min.js"></script>
+		<script src="js/hui.js"></script>
+		<script src="js/hui-tab.js" type="text/javascript"></script>
+		<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+		<script>
+			alert("user&aaa".substring(5))
+			// 滚动公告
+			hui.scrollNews(scrollnew1);
+			
+			//推荐版块tab选项卡
+			hui.tab(".hui-tab");
+			
+			//图片轮播
+			var gallery = mui('.mui-slider');
+			gallery.slider({
+				interval: 5000 //自动轮播周期，若为0则不自动播放，默认为0；
+			});
+			
+		</script>
+	</body>
+</html>

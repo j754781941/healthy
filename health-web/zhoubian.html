@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style type="text/css">
+        .ui-sortable .panel-header {
+            cursor: move
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/center1.css"/>
+    <link rel="stylesheet" href="css/mui.min.css">
+    <style type="text/css">
+        #allmap {
+            width: 100%;
+            height: 95%;
+            margin-top: 10%;
+            overflow: hidden;
+            font-family: "微软雅黑";
+        }
+    </style>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=OFyO7t0MZSiSXrm7eUCeFKhhVz1ESDmb"></script>
+    <title>地图展示</title>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="text-decoration: none;"></a>
+    <h1 id="title" class="mui-title">周边推荐</h1>
+</header>
+<div id="allmap"></div>
+<!--<div>
+    <p style="margin: 0;">如果不能直接显示，请打开gps定位后再点击地图右下角定位按钮刷新</p>
+</div>-->
+<script src="js/mui.min.js"></script>
+<script type="text/javascript">
+    var addj, addw;
+    var point;
+    var myKeys = ["健身", "保健", "养生" , "医院"];
+    // 百度地图API功能
+    var map = new BMap.Map("allmap",{minZoom:4,maxZoom:25});  // 创建Map实例
+    map.centerAndZoom("济南", 25);      // 初始化地图,用城市名设置地图中心点
+    map.enableScrollWheelZoom(true);
+    // map.enableDragging();
+
+    var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_RIGHT});// 左上角，添加比例尺
+    map.addControl(top_left_control);
+
+
+    // 添加带有定位的导航控件
+    var navigationControl = new BMap.NavigationControl({
+        // 靠左上角位置
+        anchor: BMAP_ANCHOR_TOP_LEFT,
+        // LARGE类型
+        type: BMAP_NAVIGATION_CONTROL_LARGE,
+        // 启用显示定位
+        enableGeolocation: true
+    });
+    map.addControl(navigationControl);
+    // 添加定位控件
+    var geolocationControl = new BMap.GeolocationControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT});
+    geolocationControl.addEventListener("locationSuccess", function (e) {
+        // 定位成功事件
+        var address = '';
+        address += e.addressComponent.province;
+        address += e.addressComponent.city;
+        address += e.addressComponent.district;
+        address += e.addressComponent.street;
+        address += e.addressComponent.streetNumber;
+        var local = new BMap.LocalSearch(map,
+            {renderOptions: {map: map, autoViewport: true}});
+        local.searchNearby(myKeys, address);
+		map.centerAndZoom("济南", 25);   
+        console.log(address);
+    });
+    geolocationControl.addEventListener("locationError", function (e) {
+        // 定位失败事件
+        alert(e.message);
+    });
+    map.addControl(geolocationControl);
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            var mk = new BMap.Marker(r.point);
+            map.addOverlay(mk);
+            map.panTo(r.point);
+            // alert('您的位置：'+r.point.lng+','+r.point.lat);
+            addj = r.point.lng;
+            addw = r.point.lat;
+            console.log(addj);
+            var point = new BMap.Point(addj, addw);
+            var local = new BMap.LocalSearch(map,
+                {renderOptions: {map: map, autoViewport: true}});
+            local.searchNearby(myKeys, point);
+            map.centerAndZoom(point, 25);
+        }
+        else {
+            alert('failed' + this.getStatus());
+        }
+    });
+</script>
+</body>
+</html>

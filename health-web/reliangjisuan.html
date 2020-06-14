@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>食物热量计算</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style type="text/css">
+        .ui-sortable .panel-header {
+            cursor: move
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/center1.css"/>
+    <link rel="stylesheet" href="css/mui.min.css">
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="text-decoration: none;"></a>
+    <h1 id="title" class="mui-title">食物热量计算</h1>
+</header>
+<div class="mui-content">
+    <div class="panel-body">
+        <form action="" method="post" class="form form-horizontal responsive" id="demoform">
+            <label class="form-label col-xs-3">常见食物热量：</label>
+
+            <div class="row cl">
+                <label class="form-label col-xs-3">食物名称：</label>
+                <label class="form-label col-xs-3"> </label>
+                <div class="formControls col-xs-8">
+                    <input type="text" class="input-text radius" placeholder="请输入食物名称：" name="name" id="name">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-3">进食重量：（0.1kg）</label>
+                <label class="form-label col-xs-3"> </label>
+                <div class="formControls col-xs-8">
+                    <input type="text" class="input-text radius" placeholder="请输入您进食该食物重量，以百克为单位" name="weight"
+                           id="weight">
+                </div>
+            </div>
+            <div class="row cl">
+                <input class="btn btn-success radius widdl" type="button"
+                       value="立&nbsp;&nbsp;&nbsp;即&nbsp;&nbsp;&nbsp;计&nbsp;&nbsp;&nbsp;算" onclick="jisuan()"
+                       style="color:white; background-color: #62C462;">
+            </div>
+        </form>
+    </div>
+    <div id="aaa" style="width: 94%;margin-left: 3%; overflow:scroll;">
+        <p id="jieguo"></p>
+    </div>
+</div>
+</body>
+<script src="js/mui.min.js"></script>
+<script>
+    function jisuan() {
+
+        var weight = document.getElementById("weight").value;
+        var name = document.getElementById("name").value;
+
+        if (weight == 0 || name == 0)
+            alert("请填写所有信息！");
+        else {
+            if (name == "米饭") {
+                document.getElementById("jieguo").innerHTML =
+                    "此一项食物含有：" + 116 * weight + "大卡热量。";
+            }
+            else if (name == "小米") {
+                document.getElementById("jieguo").innerHTML =
+                    "此一项食物含有：" + 358 * weight + "大卡热量。";
+            }
+            else if (name == "馒头") {
+                document.getElementById("jieguo").innerHTML =
+                    "此一项食物含有：" + 233 * weight + "大卡热量。";
+            }
+            else if (name == "花卷") {
+                document.getElementById("jieguo").innerHTML =
+                    "此一项食物含有：" + 217 * weight + "大卡热量。";
+            }
+            else if (name == "豆沙") {
+                document.getElementById("jieguo").innerHTML =
+                    "此一项食物含有：" + 243 * weight + "大卡热量。";
+            }
+            else if (name == "豆腐皮") {
+                document.getElementById("jieguo").innerHTML =
+                    "此一项食物含有：" + 409 * weight + "大卡热量。";
+            }
+            else if (name == "通心粉") {
+                document.getElementById("jieguo").innerHTML =
+                    "此一项食物含有：" + 350 * weight + "大卡热量。";
+            }
+            else if (name == "黑芝麻") {
+                document.getElementById("jieguo").innerHTML =
+                    "此一项食物含有：" + 531 * weight + "大卡热量。";
+            }
+            else {
+                document.getElementById("jieguo").innerHTML =
+                    "抱歉，暂无此食品信息。"
+            }
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css" />-->
+		<style>
+			.mui-card .mui-control-content {
+				padding: 10px;
+			}
+			
+			.mui-control-content {
+				height: 510px;
+			}
+			.title-font {
+				position: absolute;
+				margin-top: 1.6%;
+				margin-left: 2%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view mui-table-view-chevron" 
+					style="
+						   padding-top: 45%;
+						   height: 230px;
+						   background-image: url(images/background1.jpg);
+						   max-width: 100%;
+						   background-repeat: no-repeat;
+						   background-size: cover;">
+						<li class="mui-table-view-cell mui-media" id="account">
+							<a class="mui-navigate-right" href="#account">
+								<img class="mui-media-object mui-pull-left head-img" 
+								id="head-img" 
+								src="img/TIM20180806154543.png"
+								style="-moz-border-radius: 10px;
+								-webkit-border-radius: 10px;
+								border-radius:10px;">
+								<div class="mui-media-body">
+									<span id="yourname"></span>
+									<p class='mui-ellipsis' style="color: #000000;">账号:<span id="accounts"></span></p>
+								</div>
+							</a>
+						</li>
+					</ul>
+					<br />
+					<ul class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell" id="expert_input">
+							<a href="#" class="mui-navigate-right">
+								<img src="images/collect.png" style="width: 10%;" />
+								<span class="title-font">修改资料</span>
+							</a>
+						</li>
+						<li class="mui-table-view-cell" id="expert_good">
+							<a href="#" class="mui-navigate-right">
+								<img src="images/good.png" style="width: 10%;" />
+								<span class="title-font">赞我的</span>
+							</a>
+						</li>
+					</ul>
+					<br>
+					<ul class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell" id="recommed">
+							<a href="#notifications" class="mui-navigate-right">
+								<img src="images/share.png" style="width: 10%;" />
+								<span class="title-font">推荐给好友</span>
+							</a>
+						</li>
+						<li class="mui-table-view-cell" id="setting">
+							<a href="#" class="mui-navigate-right">
+								<img src="images/manage.png" style="width: 10%;" />
+								<span class="title-font">设置</span>
+							</a>
+						</li>
+					</ul>
+					<br />
+					<ul class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell" id="popovers">
+							<a href="#" class="mui-navigate-right">
+								<img src="images/face.png" style="width: 10%;" />
+								<span class="title-font">关于软件</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+		<script>
+			setTimeout(function(){
+				var obj = JSON.parse(localStorage.getItem('expertInfo'));
+				var account = obj.username;
+				var yourname = obj.name;
+				$("#yourname").html(yourname);
+				$("#accounts").html(account);
+				console.log(obj.img)
+				// if(obj.img != "http://114.115.167.207:8099/image/null"){
+				// 	setInterval(function(){
+				$("#head-img").attr("src",obj.img);
+					// },500);
+				// }
+			},200)
+			//分享操作
+			var shares = {};
+			mui.plusReady(function() {
+				// mui.alert(plus.webview.currentWebview().name);
+				plus.share.getServices(function(s) {
+					if (s && s.length > 0) {
+						for (var i = 0; i < s.length; i++) {
+							var t = s[i];
+							shares[t.id] = t;
+						}
+					}
+				}, function() {
+					console.log("获取分享服务列表失败");
+				});
+			});
+			mui(".mui-table-view").on('tap','#setting', function() {
+				// alert(11)
+				mui.openWindow({
+					url:"setting.html",
+					id:"setting.html",
+					show:{
+					autoShow:true,//页面loaded事件发生后自动显示，默认为true
+					aniShow:'animationType',//页面显示动画，默认为”slide-in-right“；
+					duration:'animationTime'//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					}
+				})
+			})
+			mui(".mui-table-view").on('tap','#account', function() {
+				mui.openWindow({
+					url:"setting/expert_account.html",
+					id:"setting/expert_account.html",
+					show:{
+					autoShow:true,//页面loaded事件发生后自动显示，默认为true
+					aniShow:'animationType',//页面显示动画，默认为”slide-in-right“；
+					duration:'animationTime'//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					}
+				})
+			})
+			
+			mui(".mui-table-view").on('tap','#popovers', function() {
+				mui.openWindow({
+					url:"popovers.html",
+					id:"popovers.html",
+					show:{
+					autoShow:true,//页面loaded事件发生后自动显示，默认为true
+					aniShow:'animationType',//页面显示动画，默认为”slide-in-right“；
+					duration:'animationTime'//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					}
+				})
+			})
+			
+			mui(".mui-table-view").on('tap','#expert_input', function() {
+				mui.openWindow({
+					url:"expert_input.html",
+					id:"expert_input.html",
+					show:{
+					autoShow:true,//页面loaded事件发生后自动显示，默认为true
+					aniShow:'animationType',//页面显示动画，默认为”slide-in-right“；
+					duration:'animationTime'//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					}
+				})
+			})
+			
+			mui(".mui-table-view").on('tap','#expert_good', function() {
+				mui.openWindow({
+					url:"expert_good.html",
+					id:"expert_good.html",
+					show:{
+					autoShow:true,//页面loaded事件发生后自动显示，默认为true
+					aniShow:'animationType',//页面显示动画，默认为”slide-in-right“；
+					duration:'animationTime'//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					}
+				})
+			})
+			
+			mui(".mui-table-view").on('tap','#recommed', function() {
+				var ids = [{
+						id: "weixin",
+						ex: "WXSceneSession"
+					}, {
+						id: "weixin",
+						ex: "WXSceneTimeline"
+					}, {
+						id: "sinaweibo"
+					}, {
+						id: "tencentweibo"
+					}, {
+						id: "qq"
+					}],
+					bts = [{
+						title: "发送给微信好友"
+					}, {
+						title: "分享到微信朋友圈"
+					}, {
+						title: "分享到新浪微博"
+					}, {
+						title: "分享到腾讯微博"
+					}, {
+						title: "分享到QQ"
+					}];
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: bts
+				}, function(e) {
+					var i = e.index;
+					if (i > 0) {
+						var s_id = ids[i - 1].id;
+						var share = shares[s_id];
+						if (share) {
+							if (share.authenticated) {
+								shareMessage(share, ids[i - 1].ex);
+							} else {
+								share.authorize(function() {
+									shareMessage(share, ids[i - 1].ex);
+								}, function(e) {
+									console.log("认证授权失败：" + e.code + " - " + e.message);
+								});
+							}
+						} else {
+							mui.toast("无法获取分享服务，请检查manifest.json中分享插件参数配置，并重新打包")
+						}
+					}
+				});
+			})
+			
+			function shareMessage(share, ex) {
+				var msg = {
+					extra: {
+						scene: ex
+					}
+				};
+				msg.href = "http://114.115.167.207:8099/blog/main";
+				msg.title = "山东省省考通过人员名单";
+				msg.content = "省长侯若晗等等一批国家重点干部";
+				if (~share.id.indexOf('weibo')) {
+					msg.content += "；体验地址：http://www.dcloud.io/hellomui/";
+				}
+				msg.thumbs = ["_www/images/logo.png"];
+				share.send(msg, function() {
+					console.log("分享到\"" + share.description + "\"成功！ ");
+				}, function(e) {
+					console.log("分享到\"" + share.description + "\"失败: " + e.code + " - " + e.message);
+				});
+			}
+			
+			
+		</script>
+
+	</body>
+
+</html>

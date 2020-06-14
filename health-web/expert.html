@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css" />-->
+		<style>
+			.mui-card .mui-control-content {
+				padding: 10px;
+			}
+			
+			.mui-control-content {
+				height: 510px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">专家</h1>
+		</header>
+		<div class="mui-content">
+			<div style="padding: 10px 10px;">
+				<div class="mui-segmented-control">
+					<a class="mui-control-item mui-active" href="#item1">专家</a>
+					<a class="mui-control-item" href="#item2">消息<span id="msgNum"></span></a>
+				</div>
+			</div>
+			<div>
+				<div id="item1" class="mui-control-content mui-active">
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<ul class="mui-table-view mui-table-view-chevron" id="experts">
+								<!-- <li class="mui-table-view-cell expert">
+									<a class="mui-navigate-right" href="javascript:void(0);" target="_blank">
+										<img src="./images/logo.png" width="20%" height="10%" />
+										<span style="position: absolute;margin-left: 2%;margin-top: 0%;">
+											姓名：<span class="username">王德昆</span>
+											<span class="sex">
+												<img src="img/boy.jpg" width="5%" height="5%" />
+											</span>
+										</span>
+										<span style="position: absolute;margin-top: 9%;margin-left: 2%;">职称：<span class="designation">高级营养师</span></span>
+									</a>
+								</li> -->
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div id="item2" class="mui-control-content">
+					<ul class="mui-table-view expertMsgs" id="message">
+						<!-- <li class="mui-table-view-cell mui-media">
+							<a href="javascript:;">
+								<img class="mui-media-object mui-pull-left" src="images/shuijiao.jpg">
+								<div class="mui-media-body">
+									幸福
+									<p class='mui-ellipsis'>能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+								</div>
+								<span style="position: absolute; font-size: 12px; margin-left: 64%;margin-top: -12%; color: #8f8f94;">下午 1:37</span>
+								<span style="position: absolute;margin-right: 4%; margin-top: 2.7%;" class="mui-badge mui-badge-danger">1</span>
+							</a>
+						</li> -->
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+		<script>
+			var messageInfos = new Array(); 
+			var messageNumber = 0;
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			
+			(function($) {
+				$('#scroll').scroll({
+					indicators: false //是否显示滚动条
+				});
+			})(mui);
+			
+			$(function(){
+				var obj = JSON.parse(localStorage.getItem('userInfo'));
+				//连接websocket服务器
+				var ws = new WebSocket("ws://114.115.167.207:8099/websocket/user&" + obj.username);
+				
+				//接收数据
+				ws.onmessage = function(evt) {
+					// alert(11)
+					messageNumber++;
+					if(messageNumber != 0){
+						$("#msgNum").html("(" + messageNumber + ")")
+					}
+					
+					var messageInfo = JSON.parse(evt.data);
+					// console.log("messageInfo\-\->"+messageInfo.username.substring(7));
+					$("#1" + messageInfo.username.substring(7)).remove();
+					if(messageInfos.length != 0){
+						var flag = 0;
+						var num = 0;
+						for(var i=0;i<messageInfos.length;i++){
+							if(messageInfos[i].username == messageInfo.username){
+								flag = 1;
+							}
+						}
+						if(flag == 1){
+							// console.log("numHTML----"+$("#expert&j754781941").html())
+							// num = parseInt($("#" + messageInfo.username.substring(7)).html()=='' || $("#" + messageInfo.username.substring(7)).html()==null?1:parseInt($("#" + messageInfo.username.substring(7)).html())+1 );
+							// // console.log("num----"+num)
+							$("#1" + messageInfo.username.substring(7)).remove();
+							$("#message").prepend('<li class="mui-table-view-cell mui-media expertMsg" data-username="' + messageInfo.username.substring(7) + '" data-name="' + messageInfo.name + '" data-img="http://114.115.167.207:8099/image/' + messageInfo.imgUrl + '" id="1' + messageInfo.username.substring(7) + '">' +
+								'<a href="javascript:;">' +
+									'<img class="mui-media-object mui-pull-left" src="http://114.115.167.207:8099/image/' + messageInfo.imgUrl + '">' +
+									'<div class="mui-media-body">' +
+										messageInfo.name +
+										'<p class="mui-ellipsis">' + messageInfo.msg + '</p>' +
+									'</div>' +
+									'<span style="position: absolute; font-size: 12px; margin-left: 64%;margin-top: -12%; color: #8f8f94;">' + messageInfo.chatDate + '</span>' +
+									'<span style="position: absolute;margin-right: 4%;  margin-top: 2.7%;" id="' + messageInfo.username.substring(7) + '" class="mui-badge mui-badge-danger">' + messageNumber + '</span>' +
+								'</a>' +
+							'</li>');
+						}else{
+							$("#message").prepend('<li class="mui-table-view-cell mui-media expertMsg" data-username="' + messageInfo.username.substring(7) + '" data-name="' + messageInfo.name + '" data-img="http://114.115.167.207:8099/image/' + messageInfo.imgUrl + '" id="1' + messageInfo.username.substring(7) + '">' +
+								'<a href="javascript:;">' +
+									'<img class="mui-media-object mui-pull-left" src="http://114.115.167.207:8099/image/' + messageInfo.imgUrl + '">' +
+									'<div class="mui-media-body">' +
+										messageInfo.name +
+										'<p class="mui-ellipsis">' + messageInfo.msg + '</p>' +
+									'</div>' +
+									'<span style="position: absolute; font-size: 12px; margin-left: 64%;margin-top: -12%; color: #8f8f94;">' + messageInfo.chatDate + '</span>' +
+									'<span style="position: absolute;margin-right: 4%;  margin-top: 2.7%;" id="' + messageInfo.username.substring(7) + '" class="mui-badge mui-badge-danger">1</span>' +
+								'</a>' +
+							'</li>');
+						}
+					}else{
+						messageInfos[0] = messageInfo;
+						$("#message").prepend('<li class="mui-table-view-cell mui-media expertMsg" data-username="' + messageInfo.username.substring(7) + '" data-name="' + messageInfo.name + '" data-img="http://114.115.167.207:8099/image/' + messageInfo.imgUrl + '" id="1' + messageInfo.username.substring(7) + '">' +
+							'<a href="javascript:;">' +
+								'<img class="mui-media-object mui-pull-left" src="http://114.115.167.207:8099/image/' + messageInfo.imgUrl + '">' +
+								'<div class="mui-media-body">' +
+									messageInfo.name +
+									'<p class="mui-ellipsis">' + messageInfo.msg + '</p>' +
+								'</div>' +
+								'<span style="position: absolute; font-size: 12px; margin-left: 64%;margin-top: -12%; color: #8f8f94;">' + messageInfo.chatDate + '</span>' +
+								'<span style="position: absolute;margin-right: 4%;  margin-top: 2.7%;" id="' + messageInfo.username.substring(7) + '" class="mui-badge mui-badge-danger">1</span>' +
+							'</a>' +
+						'</li>');
+					}
+				}
+				// 按钮设置
+				mui(".expertMsgs").on('tap', '.expertMsg', function() {
+					$("#msgNum").html('');
+					$("#" + this.getAttribute("id").substring(1)).attr("style","display:none;position: absolute;margin-right: 4%;  margin-top: 2.7%;");
+					messageNumber = 0;
+					var webview = mui.openWindow({
+						url: "im-chat.html",
+						id: "im-chat.html",
+						show: {
+							autoShow: true, //页面loaded事件发生后自动显示，默认为true
+							aniShow: 'animationType', //页面显示动画，默认为”slide-in-right“；
+							duration: 'animationTime' //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+						},
+						extras: {
+							"expertId": this.getAttribute("data-username"),
+							"expertName": this.getAttribute("data-name"),
+							"expertImg": this.getAttribute("data-img")
+						}
+					})
+				});
+				
+				//初始化
+				setTimeout(function(){
+					var url = "http://114.115.167.207:8099/users/queryUserChatInfoByUserName";
+					// alert(obj.username);
+					mui.ajax(url,{
+						data:{
+							"username": "user&" + obj.username
+						},
+						dataType:'json',//服务器返回json格式数据
+						contentType: 'application/json',
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+							// alert(data.length)
+							for(var i=0;i<data.length;i++){
+								$("#message").prepend('<li class="mui-table-view-cell mui-media expertMsg" data-username="' + data[i].to.substring(7) + '" data-name="' + data[i].username + '" data-img="http://114.115.167.207:8099/image/' + data[i].from + '" id="1' + data[i].to.substring(7) + '">' +
+									'<a href="javascript:;">' +
+										'<img class="mui-media-object mui-pull-left" src="http://114.115.167.207:8099/image/' + data[i].from + '">' +
+										'<div class="mui-media-body">' +
+											data[i].username +
+											'<p class="mui-ellipsis">' + data[i].msg + '</p>' +
+										'</div>' +
+										'<span style="position: absolute; font-size: 12px; margin-left: 64%;margin-top: -12%; color: #8f8f94;">' + data[i].createDate + '</span>' +
+										'<span style="display:none;position: absolute;margin-right: 4%;  margin-top: 2.7%;" id="' + data[i].to.substring(7) + '" class="mui-badge mui-badge-danger" style="display:none;"></span>' +
+									'</a>' +
+								'</li>');
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							// alert(2)
+						}
+					});
+					
+					var expertUrl = 'http://114.115.167.207:8099/expert/queryAllExperts';
+					mui.ajax(expertUrl,{
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+							// experts_info = data;
+							for(var i=0;i<data.length;i++){
+								// alert(data[i].sex=='男')
+								var sex = data[i].sex=='男'?'boy':'gril';
+								var imgUrl = data[i].img != null && data[i].img != undefined?"http://114.115.167.207:8099/image/" + data[i].img:"./images/logo.png";
+								$("#experts").append('<li class="mui-table-view-cell expert" id="' + imgUrl + '" name="' + data[i].id + '">' +
+									'<a class="mui-navigate-right" href="javascript:void(0);" target="_blank">' +
+										'<img src="' + imgUrl + '" width="20%" height="55px" />' +
+										'<span style="position: absolute;margin-left: 2%;margin-top: 0%;">' +
+											'姓名：<span class="username">' + data[i].name + '</span>' +
+											'<span class="sex">' +
+												'<img src="img/' + sex + '.jpg" width="5%" height="5%" />' +
+											'</span>' +
+										'</span>' +
+										'<span style="position: absolute;margin-top: 9%;margin-left: 2%;">职称：<span class="designation">' + data[i].designation + '</span></span>' +
+									'</a>' +
+								'</li>');
+							}
+						},
+						error: function(xhr,type){
+							// alert(type)
+						}
+					});
+				},500)
+				mui(".mui-table-view-chevron").on('tap', '.expert', function() {
+					var id = this.getAttribute("name");
+					var imgUrl = this.getAttribute("id");
+					var webview = mui.openWindow({
+						url: "zjsousuo.html",
+						id: "zjsousuo.html",
+						show: {
+							autoShow: true, //页面loaded事件发生后自动显示，默认为true
+							aniShow: 'animationType', //页面显示动画，默认为”slide-in-right“；
+							duration: 'animationTime' //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+						},
+						extras: {
+							"names": id,
+							"imgUrl": imgUrl
+						}
+					})
+				})
+			})
+		</script>
+
+	</body>
+
+</html>

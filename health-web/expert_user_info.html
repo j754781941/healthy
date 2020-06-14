@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min1.css">
+		<link rel="stylesheet" href="css/Button.css">
+		<style>
+			h5 {
+				margin: 5px 7px;
+			}
+
+			#biao {
+				position: absolute;
+				top: 10px;
+				left: 36%;
+			}
+
+			.hehe {
+				position: absolute;
+				top: 5px;
+				left: 0%;
+			}
+
+			#headimg {
+				position: relative;
+				left: 28%;
+			}
+
+			#dianzan {
+				position: relative;
+				bottom: -4px;
+			}
+			.userinfo{
+				/* position: absolute; */
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">用户资料卡</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-card">
+				<div class="mui-card-header mui-card-media">
+					<img src="images/logo.png" id="toux" />
+					<div class="mui-media-body">
+						<span id="name" style="position: absolute;font-size: 1.3em;font-weight: 600;margin-top: 1.4%;"></span>
+					</div>
+				</div>
+				<div class="mui-card-content">
+					<div class="mui-content-padded">
+						<p>
+							<span class="userinfo">性别：<span id="sex"></span><br /></span>
+							<span class="userinfo">年龄：<span id="age"></span><br /></span>
+							<span class="userinfo">邮箱：<span id="email"></span><br /></span>
+							<span class="userinfo">手机号：<span id="tele"></span><br /></span>
+							<span class="userinfo">QQ号：<span id="qq"></span><br /></span>
+						</p>
+					</div>
+				</div>
+				<div class="mui-card-footer">
+					<a class="mui-card-link" style="position: absolute;margin-left: 37%;margin-top: 0%;" onclick="liaotian()">联系用户</a>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+		<script>
+			var username;
+			var id = plus.webview.currentWebview().names;
+			var imgUrl = plus.webview.currentWebview().imgUrl;
+			setTimeout(function() {
+				mui.ajax('http://114.115.167.207:8099/users/selectUserInfoById', {
+					data: {
+						"id": id
+					},
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						$("#name").html(data.name);
+						$("#sex").html(data.sex);
+						$("#tele").html(data.tele);
+						$("#email").html(data.email)
+						$("#age").html(data.age)
+						$("#qq").html(data.qq)
+						username = data.username
+						$("#toux").attr("src", imgUrl)
+					},
+					error: function(xhr, type, errorThrown) {
+						mui.toast("网络异常！")
+					}
+				});
+			}, 100);
+
+			function liaotian() {
+				console.log("username-\-\->" + username);
+				console.log("expertName-\-\->" + $("#xingming").html());
+				console.log("expertImg-\-\->" + $("#toux").attr("src"));
+				mui.openWindow({
+					url: "expert_chat.html",
+					id: "expert_chat.html",
+					show: {
+						autoShow: true, //页面loaded事件发生后自动显示，默认为true
+						aniShow: 'animationType', //页面显示动画，默认为”slide-in-right“；
+						duration: 'animationTime' //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					},
+					extras: {
+						"userId": username,
+						"userName": $("#name").html(),
+						"userImg": $("#toux").attr("src")
+					}
+				})
+			}
+		</script>
+		<script>
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+		</script>
+	</body>
+</html>
